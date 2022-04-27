@@ -1,9 +1,12 @@
 import json
 import requests
+import matplotlib.pyplot as plt
+import numpy as np
 
 from bs4 import BeautifulSoup
 from functools import reduce
 from request_data import headers
+import pandas as pd
 
 
 def getPageData(url: str, page: int) -> dict:
@@ -103,6 +106,30 @@ def main():
 
         all_books = all_books + books_per_page
 
+    test = pd.DataFrame(all_books)
+    test = test[['category', 'price']]
+    test = test.groupby('category', as_index=False).mean()
+
+    labels = test['category'].tolist()
+    value = test['price'].tolist()
+    position = np.arange(len(test))
+
+    fig, ax = plt.subplots()
+
+    ax.barh(position, value)
+
+    #  Устанавливаем позиции тиков:
+    ax.set_yticks(position)
+
+    #  Устанавливаем подписи тиков
+    ax.set_yticklabels(labels,
+                       fontsize=5)
+
+    fig.set_figwidth(10)
+    fig.set_figheight(6)
+
+    plt.savefig('output.png')
+
     books_count = len(costs_list)
     avg_cost = reduce(lambda x, y: x + y, costs_list) / books_count
     print("Средняя стоимость книг: {:.3f}".format(avg_cost))
@@ -110,7 +137,6 @@ def main():
         len([x for x in all_books if x['price'] > avg_cost])))
     print("Всего книг: {:d}".format(books_count))
 
-    # TODO график распределения цен. Средняя цена и точки стоимости книг, выше или ниже этой линии
 
 
 if __name__ == "__main__":
