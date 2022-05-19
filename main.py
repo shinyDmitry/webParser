@@ -53,7 +53,7 @@ def is_json(myjson):
     return True
 
 
-def convertTextToDict(data_str: str):
+def convertTextToDict(data_str: str) -> dict:
     if is_json(data_str):
         return json.loads(data_str)
     else:
@@ -122,13 +122,12 @@ def main():
     ax.set_yticks(position)
 
     #  Устанавливаем подписи тиков
-    ax.set_yticklabels(labels,
-                       fontsize=5)
+    ax.set_yticklabels(labels, fontsize=5)
 
     fig.set_figwidth(10)
     fig.set_figheight(6)
 
-    plt.savefig('output.png')
+    plt.savefig('readme_1.png')
 
     books_count = len(costs_list)
     avg_cost = reduce(lambda x, y: x + y, costs_list) / books_count
@@ -136,7 +135,6 @@ def main():
     print("Количество книг дороже средней стоимости: {:d}".format(
         len([x for x in all_books if x['price'] > avg_cost])))
     print("Всего книг: {:d}".format(books_count))
-
 
 
 if __name__ == "__main__":
