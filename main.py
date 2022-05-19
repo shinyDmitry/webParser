@@ -106,13 +106,13 @@ def main():
 
         all_books = all_books + books_per_page
 
-    test = pd.DataFrame(all_books)
-    test = test[['category', 'price']]
-    test = test.groupby('category', as_index=False).mean()
+    all_books_df = pd.DataFrame(all_books)
+    all_books_df = all_books_df[['category', 'price']]
+    all_books_df = all_books_df.groupby('category', as_index=False).mean()
 
-    labels = test['category'].tolist()
-    value = test['price'].tolist()
-    position = np.arange(len(test))
+    labels = all_books_df['category'].tolist()
+    value = all_books_df['price'].tolist()
+    position = np.arange(len(all_books_df))
 
     fig, ax = plt.subplots()
 
@@ -127,7 +127,7 @@ def main():
     fig.set_figwidth(10)
     fig.set_figheight(6)
 
-    plt.savefig('readme_1.png')
+    plt.savefig('output.png')
 
     books_count = len(costs_list)
     avg_cost = reduce(lambda x, y: x + y, costs_list) / books_count
